@@ -1,0 +1,48 @@
+[
+    {
+        "img" : "e1.jpeg", 
+        "name": "Mike Litaroes",
+        "employeeId": "FT-0003",
+        "email": "mikelit@gmail.com",
+        "mobile": 7531695014,
+        "joinDate": "2020/17/17",
+        "role": "Web Developer"
+    },
+    {
+        "img" : "e2.jpeg", 
+        "name": "Benardo gelviz",
+        "employeeId": "FT-0005",
+        "email": "banardogel@gmail.com",
+        "mobile": 7895641235,
+        "joinDate": "2022/04/02",
+        "role": "Web Developer"
+    },
+    {
+        "img" : "e3.jpeg", 
+        "name": "Jefry Warden",
+        "employeeId": "FT-0007",
+        "email": "jafrywarden@gmail.com",
+        "mobile": 7531695014,
+        "joinDate": "2022/10/17",
+        "role": "Web Developer"
+    },
+    {
+        "img" : "e4.jpeg", 
+        "name": "Jon Doe",
+        "employeeId": "FT-0001",
+        "email": "doejon@gmail.com",
+        "mobile": 982301485,
+        "joinDate": "2012/09/25",
+        "role": "Web Developer"
+    },
+    {
+        "img" : "e5.jpeg", 
+        "name": "John Smith",
+        "employeeId": "FT-0008",
+        "email": "johnsmith@gmail.com",
+        "mobile": 9854561235,
+        "joinDate": "2018/07/24",
+        "role": "Web Developer"
+    }
+        
+]
