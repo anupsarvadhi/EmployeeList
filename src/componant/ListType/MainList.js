@@ -13,17 +13,23 @@ import FormModal from './FormModal'
 const MainList = () => {
   const [isShown, setHidden] = useState(true)
   const [modalShow, setModalShow] = useState(false)
-  // const [employees, setemployeeDetails] = useState(employeeDetails)
+  const [employees, setemployeeDetails] = useState(employeeDetails)
 
   const hideList = () => setHidden(false)
   const showList = () => setHidden(true)
   const formOpen = () => setModalShow(true)
 
+  const submit = (data) => {
+    setemployeeDetails([...employees, data])
+    setModalShow(false)
+  }
+
+  // console.log(employees)
   return (
     <>
       <div className="main-body w-100 ">
         <div className="container pt-4 d-flex">
-          <div className="heading col-8">
+          <div className="heading col-8 ">
             <p className=" fs-4 fw-bold">Employees</p>
           </div>
           <div className="btn-group d-flex justify-content-evenly col-4">
@@ -53,13 +59,14 @@ const MainList = () => {
                 </tr>
               </thead>
               <tbody>
-                {employeeDetails.map((item, i) => {
+                {employees.map((item, i) => {
                   return (
                     <>
                       <List
                         key={i}
                         img={item.img}
-                        name={item.name}
+                        fname={item.fname}
+                        lname={item.lname}
                         employeeId={item.employeeId}
                         email={item.email}
                         mobile={item.mobile}
@@ -72,8 +79,29 @@ const MainList = () => {
               </tbody>
             </Table>
           )}
-          {!isShown && <Grid />}
-          <FormModal show={modalShow} onHide={() => setModalShow(false)} />
+          <div className="container grid-div p-0 d-grid">
+            {employees.map((item, i) => {
+              return (
+                !isShown && (
+                  <>
+                    <Grid
+                      key={i}
+                      img={item.img}
+                      fname={item.fname}
+                      lname={item.lname}
+                      role={item.role}
+                    />
+                  </>
+                )
+              )
+            })}
+          </div>
+
+          <FormModal
+            show={modalShow}
+            submit={submit}
+            onHide={() => setModalShow(false)}
+          />
         </div>
       </div>
     </>

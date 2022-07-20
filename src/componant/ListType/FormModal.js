@@ -1,5 +1,5 @@
 import React from 'react'
-// import Button from 'react-bootstrap/Button'
+import { useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
@@ -7,7 +7,80 @@ import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import './mainlist.css'
 
-const FormModal = (props) => {
+const FormModal = ({ submit, ...props }) => {
+  // console.log(props)
+  let defaultDate = new Date()
+  const [date, setDate] = useState(defaultDate)
+  const [fname, setFname] = useState('')
+  const [lname, setLname] = useState('')
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [employeeId, setEmployeeId] = useState('')
+  const [number, setNumber] = useState('')
+  const [company, setCompany] = useState('')
+  const [department, setDeparment] = useState('')
+  const [designation, setDesignation] = useState('')
+
+  defaultDate.setDate(defaultDate.getDate())
+
+  const onSetDate = (event) => {
+    setDate(new Date(event.target.value))
+  }
+  const jdate = date.toLocaleDateString('en-CA')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    var nameregex = new RegExp('^[a-zA-Z]+$')
+    var userregex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{2,}$/
+    var emailregex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/gm
+    var emploIdregex = /^[A-Z0-9]{2}-\d{4}/
+    var mobileregex = /^[0-9]{10}$/
+
+    if (!fname.match(nameregex) || fname === '') {
+      return alert('Please Enter Only Alphabetic Font In First Name')
+    }
+    if (!lname.match(nameregex) || lname === '') {
+      return alert('Please Enter Only Alphabetic Font In Last Name')
+    }
+    if (!username.match(userregex)) {
+      return alert('Please Enter Username Alphanumeric value For Ex. Joen009')
+    }
+    if (!email.match(emailregex)) {
+      return alert('Please Enter valid Email Ex. exaple@gmail.com')
+    }
+    if (!employeeId.match(emploIdregex)) {
+      return alert('Please Enter Valid Employee ID Ex. FD-0004')
+    }
+    if (!number.match(mobileregex)) {
+      return alert('please Enter 10 Digit Mobile Number...!')
+    }
+    var data = {
+      fname: fname,
+      lname: lname,
+      username: username,
+      employeeId: employeeId,
+      email: email,
+      mobile: number,
+      joinDate: jdate,
+      role: designation,
+      company: company,
+      department: department,
+    }
+    setFname('')
+    setLname('')
+    setUsername('')
+    setEmail('')
+    setEmployeeId('')
+    setNumber('')
+    setCompany('')
+    setDeparment('')
+    setDesignation('')
+    // console.log('json===>', data)
+    submit(data)
+
+    alert('Empolyee Add Succsesfully.....!')
+  }
+
   return (
     <div>
       <Modal
@@ -19,106 +92,146 @@ const FormModal = (props) => {
         <Modal.Header className="border-bottom-0" closeButton></Modal.Header>
         <Modal.Body>
           <h3 className="text-center">Employees Details</h3>
-          <Form className="p-3">
+          <Form className="p-3" onSubmit={handleSubmit}>
             <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridEmail">
+              <Form.Group as={Col} controlId="formFname">
                 <Form.Label>
                   First Name<sup>*</sup>
                 </Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter First Name"
+                  placeholder="Ex. Joen"
+                  value={fname}
+                  onChange={(e) => setFname(e.target.value)}
                   required
                 />
               </Form.Group>
 
-              <Form.Group as={Col} controlId="formGridPassword">
+              <Form.Group as={Col} controlId="formLname">
                 <Form.Label>Last Name</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter Last Name"
+                  placeholder="Ex. Doe"
+                  value={lname}
+                  onChange={(e) => setLname(e.target.value)}
                   required
                 />
               </Form.Group>
             </Row>
             <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridEmail">
+              <Form.Group as={Col} controlId="formUsername">
                 <Form.Label>
                   UserName<sup>*</sup>
                 </Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter UserName"
+                  placeholder="Ex.Joen09"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                 />
               </Form.Group>
 
-              <Form.Group as={Col} controlId="formGridPassword">
+              <Form.Group as={Col} controlId="formEmail">
                 <Form.Label>
                   Email<sup>*</sup>
                 </Form.Label>
-                <Form.Control type="Email" placeholder="Enter Email" required />
+                <Form.Control
+                  type="Email"
+                  placeholder="Enter Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
               </Form.Group>
             </Row>
             <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridEmail">
+              <Form.Group as={Col} controlId="formEmploId">
                 <Form.Label>
                   Employee ID<sup>*</sup>
                 </Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter Employee ID"
+                  placeholder="Ex.FD-0004"
+                  value={employeeId}
+                  onChange={(e) => setEmployeeId(e.target.value)}
                   required
                 />
               </Form.Group>
 
-              <Form.Group as={Col} controlId="formGridPassword">
+              <Form.Group as={Col} controlId="formDate">
                 <Form.Label>
                   Joining Date<sup>*</sup>
                 </Form.Label>
-                <Form.Control type="date" required />
+                <Form.Control
+                  type="date"
+                  value={jdate}
+                  onChange={onSetDate}
+                  required
+                />
               </Form.Group>
             </Row>
             <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridPassword">
+              <Form.Group as={Col} controlId="formNumber">
                 <Form.Label>Phone</Form.Label>
                 <Form.Control
                   type="number"
-                  placeholder="Enter Phone Number"
+                  placeholder="Ex. 4569873215"
+                  value={number}
+                  onChange={(e) => setNumber(e.target.value)}
                   required
                 />
               </Form.Group>
 
-              <Form.Group as={Col} controlId="formGridState">
+              <Form.Group as={Col} controlId="formCompany">
                 <Form.Label>Company</Form.Label>
-                <Form.Select required>
-                  <option selected>Choose...</option>
-                  <option>Global Technologies</option>
-                  <option>Delta Infotect</option>
-                  <option>International Software Inc</option>
+                <Form.Select
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  required
+                >
+                  <option value=""></option>
+                  <option value="Global Technologies">
+                    Global Technologies
+                  </option>
+                  <option value="Delta Infotect">Delta Infotect</option>
+                  <option value="International Software Inc">
+                    International Software Inc
+                  </option>
                 </Form.Select>
               </Form.Group>
             </Row>
             <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridState">
+              <Form.Group as={Col} controlId="formDepartment">
                 <Form.Label>
                   Department<sup>*</sup>
                 </Form.Label>
-                <Form.Select defaultValue="Choose..." required>
-                  <option>Web Devlopment</option>
-                  <option>IT Menagement</option>
-                  <option>Marketing</option>
+                <Form.Select
+                  value={department}
+                  onChange={(e) => setDeparment(e.target.value)}
+                  required
+                >
+                  <option value=""></option>
+                  <option value="Web Devlopment">Web Devlopment</option>
+                  <option value="IT Menagement">IT Menagement</option>
+                  <option value="Marketing">Marketing</option>
                 </Form.Select>
               </Form.Group>
 
-              <Form.Group as={Col} controlId="formGridState">
+              <Form.Group as={Col} controlId="formDesignetion">
                 <Form.Label>
                   Designation<sup>*</sup>
                 </Form.Label>
-                <Form.Select className="ae" defaultValue="Choose..." required>
-                  <option className="ae2">Web Designer</option>
-                  <option>Web Developer</option>
-                  <option>Android Developer</option>
+                <Form.Select
+                  className="ae"
+                  value={designation}
+                  onChange={(e) => setDesignation(e.target.value)}
+                  required
+                >
+                  <option value=""></option>
+                  <option value="Web Designer">Web Designer</option>
+                  <option value="Web Developer">Web Developer</option>
+                  <option value="Android Developer">Android Developer</option>
                 </Form.Select>
               </Form.Group>
             </Row>

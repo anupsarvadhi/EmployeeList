@@ -25,9 +25,9 @@
   border: none;
   outline: none;
 }
-.table {
+/* .table {
   border-collapse: unset !important;
-}
+} */
 tbody,
 td {
   border-style: none !important;

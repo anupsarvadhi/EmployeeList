@@ -6,15 +6,15 @@ const list = (props) => {
     <>
       <tr>
         <td style={{ color: '#FF7F50', fontWeight: '600' }}>
-          {
+          {/* {
             <img
               className="img-icon "
               src={require(`../Employees Image/${props.img}`)}
               alt=""
             />
-          }
+          } */}
           &nbsp;&nbsp;
-          {props.name}
+          {props.fname}&nbsp;{props.lname}
         </td>
         <td>{props.employeeId}</td>
         <td>{props.email}</td>
