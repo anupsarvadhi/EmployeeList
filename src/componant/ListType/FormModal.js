@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
@@ -7,9 +7,9 @@ import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import './mainlist.css'
 
-const FormModal = ({ submit, ...props }) => {
-  // console.log(props)
+const FormModal = ({ btn, editvalue, submit, ...props }) => {
   let defaultDate = new Date()
+
   const [date, setDate] = useState(defaultDate)
   const [fname, setFname] = useState('')
   const [lname, setLname] = useState('')
@@ -34,12 +34,11 @@ const FormModal = ({ submit, ...props }) => {
     var userregex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{2,}$/
     var emailregex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/gm
     var emploIdregex = /^[A-Z0-9]{2}-\d{4}/
-    var mobileregex = /^[0-9]{10}$/
 
-    if (!fname.match(nameregex) || fname === '') {
+    if (!fname.match(nameregex)) {
       return alert('Please Enter Only Alphabetic Font In First Name')
     }
-    if (!lname.match(nameregex) || lname === '') {
+    if (!lname.match(nameregex)) {
       return alert('Please Enter Only Alphabetic Font In Last Name')
     }
     if (!username.match(userregex)) {
@@ -51,9 +50,10 @@ const FormModal = ({ submit, ...props }) => {
     if (!employeeId.match(emploIdregex)) {
       return alert('Please Enter Valid Employee ID Ex. FD-0004')
     }
-    if (!number.match(mobileregex)) {
+    if (number.length > 10 || number.length < 10) {
       return alert('please Enter 10 Digit Mobile Number...!')
     }
+
     var data = {
       fname: fname,
       lname: lname,
@@ -66,6 +66,7 @@ const FormModal = ({ submit, ...props }) => {
       company: company,
       department: department,
     }
+
     setFname('')
     setLname('')
     setUsername('')
@@ -75,11 +76,40 @@ const FormModal = ({ submit, ...props }) => {
     setCompany('')
     setDeparment('')
     setDesignation('')
-    // console.log('json===>', data)
-    submit(data)
 
-    alert('Empolyee Add Succsesfully.....!')
+    submit(data)
+    handleReset()
+
+    btn
+      ? alert('Empolyee Update Succsesfully.....!')
+      : alert('Empolyee Add Succsesfully.....!')
   }
+
+  const handleReset = () => {
+    setFname('')
+    setLname('')
+    setUsername('')
+    setEmail('')
+    setEmployeeId('')
+    setNumber('')
+    setCompany('')
+    setDeparment('')
+    setDesignation('')
+  }
+
+  useEffect(() => {
+    if (editvalue) {
+      setFname(editvalue.fname)
+      setLname(editvalue.lname)
+      setUsername(editvalue.username)
+      setEmail(editvalue.email)
+      setEmployeeId(editvalue.employeeId)
+      setNumber(editvalue.mobile)
+      setCompany(editvalue.company)
+      setDeparment(editvalue.department)
+      setDesignation(editvalue.role)
+    }
+  }, [])
 
   return (
     <div>
@@ -88,6 +118,7 @@ const FormModal = ({ submit, ...props }) => {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        className="position-absolute"
       >
         <Modal.Header className="border-bottom-0" closeButton></Modal.Header>
         <Modal.Body>
@@ -101,7 +132,7 @@ const FormModal = ({ submit, ...props }) => {
                 <Form.Control
                   type="text"
                   placeholder="Ex. Joen"
-                  value={fname}
+                  value={fname || ''}
                   onChange={(e) => setFname(e.target.value)}
                   required
                 />
@@ -112,7 +143,7 @@ const FormModal = ({ submit, ...props }) => {
                 <Form.Control
                   type="text"
                   placeholder="Ex. Doe"
-                  value={lname}
+                  value={lname || ''}
                   onChange={(e) => setLname(e.target.value)}
                   required
                 />
@@ -126,7 +157,7 @@ const FormModal = ({ submit, ...props }) => {
                 <Form.Control
                   type="text"
                   placeholder="Ex.Joen09"
-                  value={username}
+                  value={username || ''}
                   onChange={(e) => setUsername(e.target.value)}
                   required
                 />
@@ -139,7 +170,7 @@ const FormModal = ({ submit, ...props }) => {
                 <Form.Control
                   type="Email"
                   placeholder="Enter Email"
-                  value={email}
+                  value={email || ''}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
@@ -153,7 +184,7 @@ const FormModal = ({ submit, ...props }) => {
                 <Form.Control
                   type="text"
                   placeholder="Ex.FD-0004"
-                  value={employeeId}
+                  value={employeeId || ''}
                   onChange={(e) => setEmployeeId(e.target.value)}
                   required
                 />
@@ -165,7 +196,7 @@ const FormModal = ({ submit, ...props }) => {
                 </Form.Label>
                 <Form.Control
                   type="date"
-                  value={jdate}
+                  value={jdate || ''}
                   onChange={onSetDate}
                   required
                 />
@@ -176,8 +207,8 @@ const FormModal = ({ submit, ...props }) => {
                 <Form.Label>Phone</Form.Label>
                 <Form.Control
                   type="number"
-                  placeholder="Ex. 4569873215"
-                  value={number}
+                  placeholder="Ex. 9569873215"
+                  value={number || ''}
                   onChange={(e) => setNumber(e.target.value)}
                   required
                 />
@@ -186,7 +217,7 @@ const FormModal = ({ submit, ...props }) => {
               <Form.Group as={Col} controlId="formCompany">
                 <Form.Label>Company</Form.Label>
                 <Form.Select
-                  value={company}
+                  value={company || ''}
                   onChange={(e) => setCompany(e.target.value)}
                   required
                 >
@@ -207,7 +238,7 @@ const FormModal = ({ submit, ...props }) => {
                   Department<sup>*</sup>
                 </Form.Label>
                 <Form.Select
-                  value={department}
+                  value={department || ''}
                   onChange={(e) => setDeparment(e.target.value)}
                   required
                 >
@@ -224,7 +255,7 @@ const FormModal = ({ submit, ...props }) => {
                 </Form.Label>
                 <Form.Select
                   className="ae"
-                  value={designation}
+                  value={designation || ''}
                   onChange={(e) => setDesignation(e.target.value)}
                   required
                 >
@@ -241,7 +272,7 @@ const FormModal = ({ submit, ...props }) => {
                 type="submit"
                 className="px-3 bg-warning border-0"
               >
-                Add Employee
+                {btn ? 'Update' : 'Add Employee'}
               </Button>
             </div>
           </Form>
